@@ -3,13 +3,14 @@ const fs = require("fs");
 const SVG = require("./lib/svg");
 const { Square, Triangle, Circle } = require("./lib/shapes");
 
+// prompt to get user's input
 const questions = [
     {
         type: "input",
         message: "Enter text for the logo. (Must not be more than 3 characters)",
         name: "logoText",
         validate: (logoText) => {
-            if (logoText.length > 3 || logoText.length < 1) {
+            if (logoText.length > 3) {
                 return "Text for the logo must not be more than 3 characters.";
             }
             return true;
@@ -32,12 +33,7 @@ const questions = [
         name: "shapeColor"
     }];
 
-const writeLogo = logo => {
-    fs.writeFile("logo.svg", logo.render(), (err) =>
-        err ? console.error(err) : console.log("Generated logo.svg")
-    )
-}
-
+// use inquirer package to receive user's input    
 inquirer
     .prompt(questions)
     .then(function (data) {
@@ -60,4 +56,11 @@ inquirer
         }
 
         writeLogo(logo);
-    })
+    });
+
+    // generates svg logo
+    const writeLogo = logo => {
+        fs.writeFile("logo.svg", logo.render(), (err) =>
+            err ? console.error(err) : console.log("Generated logo.svg")
+        )
+    }
